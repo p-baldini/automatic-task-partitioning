@@ -2,6 +2,7 @@
 
 .bak/
 .pixi/
+.vscode/
 build_ros/
 build/
 install/
