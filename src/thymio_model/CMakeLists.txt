@@ -17,11 +17,13 @@ set(THYMIO_SOURCES
   ${THYMIO_DIR}/simulator/thymio_ground_rotzonly_sensor.cpp
   ${THYMIO_DIR}/simulator/thymio_proximity_default_sensor.cpp
   ${THYMIO_DIR}/simulator/thymio_led_actuator.cpp
+  ${THYMIO_DIR}/simulator/thymio_range_and_bearing_sensor.cpp
 )
 
 set(THYMIO_LIBRARIES
   argos3core_simulator
   argos3plugin_simulator_entities
+  argos3plugin_simulator_media
   argos3plugin_simulator_genericrobot
   argos3plugin_simulator_dynamics2d
 )

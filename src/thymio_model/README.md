@@ -19,6 +19,7 @@ We kept only `control_interface/` and the `simulator/` sources that upstream com
 | `<Thymio_proximity implementation="default">` | sensor | 7 readings in [0,1]: [0..4] front left to front right, [5] rear left, [6] rear right. `range` defaults to 0.11 m. Also accepts the generic `noise_level` and `show_rays` attributes |
 | `<Thymio_ground implementation="rot_z_only">` | sensor | 2 grayscale readings: [0] left, [1] right. Needs a `<floor>` in the arena |
 | `<thymio_led implementation="default">` | actuator | |
+| `<Thymio_range_and_bearing implementation="medium" medium>` | sensor | Generic RAB readings, limited to front/rear IR cones (local change 4). Accepts `aperture` (degrees, default 20), `show_rays`, `noise_std_dev`, `packet_drop_prob` |
 
 The generic `differential_steering` and `range_and_bearing` sensors and actuators also work with it.
 The kinematic wheel distance is 0.08 m (`Thymio_WHEEL_DISTANCE`).
@@ -37,3 +38,11 @@ Each change is marked `LOCAL CHANGE` in the source.
 3. `control_interface/ci_thymio_proximity_sensor.cpp`: the `Angle` metadata of the proximity
    readings had the wrong sign compared to where the sensors actually are (reading 0 is front-left,
    +0.698 rad).
+4. `simulator/thymio_range_and_bearing_sensor.{h,cpp}` (new files): `Thymio_range_and_bearing`
+   sensor. The real Thymio has no range-and-bearing board. Robots communicate through the
+   horizontal IR sensors (`prox.comm`), which face only forward and backward. The generic
+   `range_and_bearing` sensor is omnidirectional. This sensor copies its `medium` implementation
+   and adds one rule: a message is received only if each robot lies within `aperture` (default 20°)
+   of one of the other robot's `PROXIMITY_SENSOR_ANGLES`. Directions are measured from the robot
+   centres. With the default, the coverage is ±60° at the front and ±20° at the rear. Robots side
+   by side cannot communicate.
