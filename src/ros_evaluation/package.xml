@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="3">
+    <name>ros_evaluation</name>
+    <version>0.1.0</version>
+    <description>ROS 2 evaluation node for the task specialization experiment</description>
+    <maintainer email="paolo.baldini.phd@gmail.com">Paolo Baldini</maintainer>
+    <license>TODO</license>
+
+    <exec_depend>rclpy</exec_depend>
+    <exec_depend>geometry_msgs</exec_depend>
+    <exec_depend>std_msgs</exec_depend>
+
+    <export>
+        <build_type>ament_python</build_type>
+    </export>
+</package>
