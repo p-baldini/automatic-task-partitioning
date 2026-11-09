@@ -23,6 +23,9 @@ namespace
         return str_id;
     }
 
+    // The simulated ground sensor returns CColor::ToGrayScale(), i.e., a value in [0, 255].
+    constexpr Real GROUND_MAX_READING = 255.0;
+
     /* Packs a sensor's readings into a Float32MultiArray message */
     template <typename TReadings>
     std_msgs::msg::Float32MultiArray ToMultiArray(const TReadings& t_readings)
@@ -32,6 +35,16 @@ namespace
         {
             cMsg.data.push_back(static_cast<float>(sReading.Value));
         }
+        return cMsg;
+    }
+
+    /* Packs the ground readings into a Float32MultiArray message, normalized in [0, 1] (0 black, 1 white) */
+    template <typename TReadings>
+    std_msgs::msg::Float32MultiArray ToNormalizedGround(const TReadings& t_readings)
+    {
+        auto cMsg = ToMultiArray(t_readings);
+        auto normalize = [](float f_value){ return std::clamp(f_value / GROUND_MAX_READING, 0.0, 1.0); };
+        std::transform(cMsg.data.begin(), cMsg.data.end(), cMsg.data.begin(), normalize);
         return cMsg;
     }
 }
@@ -64,7 +77,7 @@ void CRosThymio::ControlStep()
 
     /* Publish sensor readings */
     m_pcProximityPub->publish(ToMultiArray(m_pcProximity->GetReadings())); // TODO: make it a custom message type
-    m_pcGroundPub->publish(ToMultiArray(m_pcGround->GetReadings()));
+    m_pcGroundPub->publish(ToNormalizedGround(m_pcGround->GetReadings()));
 
     /* Twist -> wheel speeds; ARGoS wants cm/s */
     const Real fV = m_cCmdVel.linear.x;
