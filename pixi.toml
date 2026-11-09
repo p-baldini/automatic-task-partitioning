@@ -14,7 +14,7 @@ configure = { cmd = "cmake -S src -B build -G Ninja -DCMAKE_BUILD_TYPE=Release",
 build = { cmd = "cmake --build build", depends-on = ["configure"] }
 argos3 = { cmd = "argos3 -c exp/arena.argos", depends-on = ["build"] }
 build-ros = { cmd = "colcon build --base-paths src/ros_gossip src/ros_policy src/ros_evaluation src/ros_experiment --build-base build_ros", inputs = ["src/ros_*/**"], outputs = ["install/setup.bash"] }
-experiment = { cmd = "bash -c 'source install/setup.bash && ros2 launch ros_experiment experiment.launch.py'", depends-on = ["build", "build-ros"] }
+experiment = { cmd = "bash -c 'source install/setup.bash && ros2 launch ros_experiment experiment.launch.py n_robots:={{ robots_count }}'", depends-on = ["build", "build-ros"], args = ["robots_count"] }
 
 [dependencies]
 argos3 = { version = "3.0.0.0.beta59.*", channel = "pbaldini" }
