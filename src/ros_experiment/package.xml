@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package format="3">
+    <name>ros_experiment</name>
+    <version>0.1.0</version>
+    <description>Launch files for the task specialization experiment</description>
+    <maintainer email="paolo.baldini.phd@gmail.com">Paolo Baldini</maintainer>
+    <license>TODO</license>
+
+    <exec_depend>launch</exec_depend>
+    <exec_depend>launch_ros</exec_depend>
+    <exec_depend>ros_gossip</exec_depend>
+    <exec_depend>ros_policy</exec_depend>
+    <exec_depend>ros_evaluation</exec_depend>
+
+    <export>
+        <build_type>ament_python</build_type>
+    </export>
+</package>
