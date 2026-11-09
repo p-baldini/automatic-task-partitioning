@@ -1,0 +1,32 @@
+[workspace]
+authors = ["Paolo Baldini <paolo.baldini.phd@gmail.com>"]
+channels = ["robostack-jazzy", "conda-forge", "https://conda.anaconda.org/pbaldini"]
+name = "Individual Online Learning in Robot Swarms with Task Specialization"
+platforms = ["linux-64"]
+version = "0.1.0"
+
+[activation.env]
+ARGOS_PLUGIN_PATH = "$PIXI_PROJECT_ROOT/build"
+LD_LIBRARY_PATH = "/run/opengl-driver/lib:$LD_LIBRARY_PATH"
+
+[tasks]
+configure = { cmd = "cmake -S src -B build -G Ninja -DCMAKE_BUILD_TYPE=Release", inputs = ["src/**/CMakeLists.txt"], outputs = ["build/build.ninja"] }
+build = { cmd = "cmake --build build", depends-on = ["configure"] }
+argos3 = { cmd = "argos3 -c exp/arena.argos", depends-on = ["build"] }
+build-ros = { cmd = "colcon build --base-paths src/ros_gossip src/ros_policy src/ros_evaluation src/ros_experiment --build-base build_ros", inputs = ["src/ros_*/**"], outputs = ["install/setup.bash"] }
+experiment = { cmd = "bash -c 'source install/setup.bash && ros2 launch ros_experiment experiment.launch.py'", depends-on = ["build", "build-ros"] }
+
+[dependencies]
+argos3 = { version = "3.0.0.0.beta59.*", channel = "pbaldini" }
+cmake = "*"
+colcon-common-extensions = ">=0.3.0,<0.4"
+cxx-compiler = "*"
+ninja = "*"
+ros-jazzy-geometry-msgs = "*"
+ros-jazzy-launch-ros = ">=0.26.13,<0.27"
+ros-jazzy-ros-core = "*"
+ros-jazzy-ros2launch = ">=0.26.13,<0.27"
+ros-jazzy-ros2pkg = ">=0.32.13,<0.33"
+ros-jazzy-ros2run = ">=0.32.13,<0.33"
+ros-jazzy-std-msgs = "*"
+setuptools = ">=84.2.1,<85"
