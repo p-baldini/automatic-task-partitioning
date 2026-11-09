@@ -46,63 +46,87 @@
     <!-- —————————————————————————————————————————————————————————————————— -->
     <!-- Loop functions                                                     -->
     <!-- —————————————————————————————————————————————————————————————————— -->
-    <!-- Corridor along X, centered in the origin (inner size 4 x 0.8 m).   -->
-    <!-- Floor: black for the first black_length meters (X < 0 end),        -->
-    <!-- white for white_length meters around X = 0, gray elsewhere.        -->
+    <!-- Square arena centered in the origin (inner size 5 x 5 m).          -->
+    <!-- Floor: white vertical band of white_width meters around X = 0;     -->
+    <!-- black nest of radius nest_radius centered in (nest_x, 0); on the   -->
+    <!-- left of the white band, a radial gradient from black (nest) to    -->
+    <!-- gray (farthest left-side point);                                   -->
+    <!-- uniform gray on the right of the white band.                       -->
     <loop_functions                     label="loopfunctions"
                                         library="loopfunctions/libloopfunctions.so"
-                                        corridor_length="4.0"
-                                        black_length="0.5"
-                                        white_length="0.5"
+                                        arena_side="5.0"
+                                        white_width="0.5"
+                                        nest_radius="0.35"
+                                        nest_x="-1.8"
     />
 
     <!-- —————————————————————————————————————————————————————————————————— -->
     <!-- Arena configuration                                                -->
     <!-- —————————————————————————————————————————————————————————————————— -->
-    <arena                              size="4.4, 1.2, 1"
+    <arena                              size="5.4, 5.4, 1"
                                         center="0,0,0.5"
-                                        positional_grid_size="4,1,1"
+                                        positional_grid_size="5,5,1"
     >
         <floor                          id="floor"
                                         source="loop_functions"
                                         pixels_per_meter="100"
         />
         <box                            id="wall-north"
-                                        size="4.1, 0.05, 0.2"
+                                        size="5.1, 0.05, 0.2"
                                         movable="false"
         >
-            <body                       position="0, 0.425, 0"
+            <body                       position="0, 2.525, 0"
                                         orientation="0, 0, 0"
             />
         </box>
         <box                            id="wall-south"
-                                        size="4.1, 0.05, 0.2"
+                                        size="5.1, 0.05, 0.2"
                                         movable="false"
         >
-            <body                       position="0, -0.425, 0"
+            <body                       position="0, -2.525, 0"
                                         orientation="0, 0, 0"
             />
         </box>
         <box                            id="wall-west"
-                                        size="0.05, 0.8, 0.2"
+                                        size="0.05, 5.0, 0.2"
                                         movable="false"
         >
-            <body                       position="-2.025, 0, 0"
+            <body                       position="-2.525, 0, 0"
                                         orientation="0, 0, 0"
             />
         </box>
         <box                            id="wall-east"
-                                        size="0.05, 0.8, 0.2"
+                                        size="0.05, 5.0, 0.2"
                                         movable="false"
         >
-            <body                       position="2.025, 0, 0"
+            <body                       position="2.525, 0, 0"
                                         orientation="0, 0, 0"
             />
         </box>
+        <!-- Passive prey: light movable cylinders on the right side, to be pushed into the nest. -->
         <distribute>
             <position                   method="uniform"
-                                        min="-1.9, -0.32, 0"
-                                        max="1.9, 0.32, 0"
+                                        min="0.5, -2.4, 0"
+                                        max="2.4, 2.4, 0"
+            />
+            <orientation                method="constant"
+                                        values="0, 0, 0"
+            />
+            <entity                     quantity="10"
+                                        max_trials="10000"
+            >
+                <cylinder               id="prey_"
+                                        radius="0.04"
+                                        height="0.08"
+                                        mass="0.05"
+                                        movable="true"
+                />
+            </entity>
+        </distribute>
+        <distribute>
+            <position                   method="uniform"
+                                        min="-2.4, -2.4, 0"
+                                        max="2.4, 2.4, 0"
             />
             <orientation                method="gaussian"
                                         mean="0, 0, 0"
@@ -149,7 +173,7 @@
             <camera>
                 <placements>
                     <placement          index="0"
-                                        position="0, 0, 3.5"
+                                        position="0, 0, 6.5"
                                         look_at="0, 0, 0"
                                         up="0, 1, 0"
                                         lens_focal_length="20"
