@@ -13,5 +13,9 @@ An example is that of *foraging*, in which some robots may not receive rewards f
 In the following, you can find a description of each package and/or module of the experiment:
 
 - `src/loopfunctions`: ARGoS loop functions of the experiment, which set the floor color seen by the Thymio ground sensors (a light gray arena disc on a darker gray floor).
+- `src/ros_evaluation`: ROS 2 node (one per robot) that will evaluate the robot's performance during the experiment (placeholder, not yet implemented).
+- `src/ros_experiment`: ROS 2 launch package; starts ARGoS, one gossip, policy and evaluation node per robot (namespace `thymio_<i>`).
+- `src/ros_gossip`: ROS 2 node that will handle communication between robots (placeholder, not yet implemented).
+- `src/ros_policy`: ROS 2 node that will host the robot's control policy (placeholder, not yet implemented).
 - `src/ros_thymio`: ARGoS controller that exposes each simulated Thymio to ROS 2, publishing its sensor readings and subscribing to velocity commands.
 - `src/thymio_model`: ARGoS plugin (vendored from [resilient-swarms/thymio](https://github.com/resilient-swarms/thymio)) that models the Thymio robot in simulation, with its sensors, actuators and physics. The plugin has been customized to simulate the only directional (front/rear) communication of the Thymio.
