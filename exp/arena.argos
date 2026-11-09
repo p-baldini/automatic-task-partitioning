@@ -1,0 +1,220 @@
+<?xml version="1.0" ?>
+
+<argos-configuration>
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    <!-- General configuration                                              -->
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    <framework>
+        <system                         threads="0" />
+        <experiment                     length="0"
+                                        ticks_per_second="10"
+                                        random_seed="0"
+        />
+    </framework>
+
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    <!-- Controllers                                                        -->
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    <controllers>
+        <ros_thymio_controller          id="generic-controller"
+                                        library="ros_thymio/libros_thymio.so"
+        >
+            <actuators>
+                <differential_steering  implementation="default"
+                                        noise_level="0.01"
+                />
+                <range_and_bearing      implementation="default"
+                />
+            </actuators>
+            <sensors>
+                <Thymio_proximity       implementation="default"
+                                        noise_level="0.01"
+                                        show_rays="true"
+                />
+                <Thymio_ground          implementation="rot_z_only" />
+                <differential_steering  implementation="default"
+                                        noise_level="0.01"
+                />
+                <range_and_bearing      implementation="medium"
+                                        medium="rab"
+                                        show_rays="true"
+                />
+            </sensors>
+            <params                     max_wheel_speed="10" />
+        </ros_thymio_controller>
+    </controllers>
+
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    <!-- Loop functions                                                     -->
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    <loop_functions                     label="loopfunctions"
+                                        library="loopfunctions/libloopfunctions.so"
+                                        arena_radius="1.5"
+    />
+
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    <!-- Arena configuration                                                -->
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    <arena                              size="3, 3, 1"
+                                        center="0,0,0.5"
+                                        positional_grid_size="3,3,1"
+    >
+        <floor                          id="floor"
+                                        source="loop_functions"
+                                        pixels_per_meter="50"
+        />
+        <box                            id="wall-12h"
+                                        size="0.1, 0.85, 0.2"
+                                        movable="false"
+        >
+            <body                       position="1.5, 0, 0"
+                                        orientation="0, 0, 0"
+            />
+        </box>
+        <box                            id="wall-13h"
+                                        size="0.1, 0.85, 0.2"
+                                        movable="false"
+        >
+            <body                       position="1.28, -0.79, 0"
+                                        orientation="-30, 0, 0"
+            />
+        </box>
+        <box							id="wall-14h"
+										size="0.1, 0.85, 0.2"
+                                        movable="false"
+        >
+            <body                       position="0.78, -1.28, 0"
+                                        orientation="-60, 0, 0"
+            />
+        </box>
+        <box							id="wall-15h"
+										size="0.1, 0.85, 0.2"
+                                        movable="false">
+            <body                       position="0, -1.5, 0"
+                                        orientation="-90, 0, 0"
+            />
+        </box>
+        <box							id="wall-16h"
+										size="0.1, 0.85, 0.2"
+                                        movable="false">
+            <body                       position="-0.78, -1.28, 0"
+                                        orientation="-120, 0, 0"
+            />
+        </box>
+        <box							id="wall-17h"
+										size="0.1, 0.85, 0.2"
+                                        movable="false">
+            <body                       position="-1.28, -0.79, 0"
+                                        orientation="-150, 0, 0"
+            />
+        </box>
+        <box							id="wall-18h"
+										size="0.1, 0.85, 0.2"
+                                        movable="false">
+            <body                       position="-1.5, 0, 0"
+                                        orientation="180, 0, 0"
+            />
+        </box>
+        <box							id="wall-19h"
+										size="0.1, 0.85, 0.2"
+                                        movable="false">
+            <body						position="-1.28, 0.79, 0"
+                                        orientation="150, 0, 0"
+            />
+        </box>
+        <box							id="wall-20h"
+										size="0.1, 0.85, 0.2"
+                                        movable="false">
+            <body						position="-0.78, 1.28, 0"
+                                        orientation="120, 0, 0"
+            />
+        </box>
+        <box							id="wall-21h"
+										size="0.1, 0.85, 0.2"
+                                        movable="false">
+            <body						position="0, 1.5, 0"
+                                        orientation="90, 0, 0"
+            />
+        </box>
+        <box							id="wall-22h"
+										size="0.1, 0.85, 0.2"
+                                        movable="false">
+            <body						position="0.78, 1.28, 0"
+                                        orientation="60, 0, 0"
+            />
+        </box>
+        <box							id="wall-23h"
+										size="0.1, 0.85, 0.2"
+                                        movable="false">
+            <body						position="1.28, 0.79, 0"
+                                        orientation="30, 0, 0"
+            />
+        </box>
+        <cylinder                       id="center"
+                                        height="0.2"
+                                        radius="0.5"
+                                        movable="false"
+        >
+            <body                       position="0, 0, 0" />
+        </cylinder>
+        <distribute>
+            <position                   method="uniform"
+                                        min="-0.95, -0.95, 0"
+                                        max="0.95, 0.95, 0"
+            />
+            <orientation                method="gaussian"
+                                        mean="0, 0, 0"
+                                        std_dev="360, 0, 0"
+            />
+            <entity                     quantity="10"
+                                        max_trials="10000"
+            >
+                <Thymio                 id="thymio_"
+                                        rab_range="0.5"
+                                        rab_data_size="10"
+                >
+                    <controller         config="generic-controller" />
+                </Thymio>
+            </entity>
+        </distribute>
+    </arena>
+
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    <!-- Physics engines                                                    -->
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    <physics_engines>
+        <dynamics2d                     id="dyn2d" />
+    </physics_engines>
+
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    <!-- Media                                                              -->
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    <media>
+        <range_and_bearing              id="rab"
+                                        index="grid"
+                                        grid_size="1, 1, 1"
+        />
+        <led                            id="leds" />
+    </media>
+
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    <!-- Visualization                                                      -->
+    <!-- —————————————————————————————————————————————————————————————————— -->
+    
+    <!--    -->
+    <visualization>
+        <qt-opengl>
+            <camera>
+                <placements>
+                    <placement          index="0"
+                                        position="0, 0, 3.5"
+                                        look_at="0, 0, 0"
+                                        up="1, 0, 0"
+                                        lens_focal_length="20"
+                    />
+                </placements>
+            </camera>
+        </qt-opengl>
+    </visualization>
+
+</argos-configuration>
