@@ -13,4 +13,4 @@ In the following, you can find a description of each package and/or module of th
 
 - `src/loopfunctions`: ARGoS loop functions of the experiment, which set the floor color seen by the Thymio ground sensors (a light gray arena disc on a darker gray floor).
 - `src/ros_thymio`: ARGoS controller that exposes each simulated Thymio to ROS 2, publishing its sensor readings and subscribing to velocity commands.
-- `src/thymio_model`: ARGoS plugin (vendored from [resilient-swarms/thymio](https://github.com/resilient-swarms/thymio)) that models the Thymio robot in simulation, with its sensors, actuators and physics.
+- `src/thymio_model`: ARGoS plugin (vendored from [resilient-swarms/thymio](https://github.com/resilient-swarms/thymio)) that models the Thymio robot in simulation, with its sensors, actuators and physics. The plugin has been customized to simulate the only directional (front/rear) communication of the Thymio.
