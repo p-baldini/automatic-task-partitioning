@@ -8,6 +8,14 @@ That work demonstrated that collective behaviour can be achieved through individ
 With this experiment, we demonstrate that introducing communication permits to address a class of problems for which the collective performance cannot be deduced from the individual one.
 An example is that of *foraging*, in which some robots may not receive rewards for their actions but remain essentials for task completition.
 
+## Run the experiment
+
+Use the following command(s) to run the experiment:
+
+```bash
+pixi run experiment
+```
+
 ## Packages
 
 In the following, you can find a description of each package and/or module of the experiment:
