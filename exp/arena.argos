@@ -36,6 +36,7 @@
                 />
                 <Thymio_range_and_bearing implementation="medium"
                                         medium="rab"
+                                        show_rays="true"
                 />
             </sensors>
             <params                     max_wheel_speed="10" />
