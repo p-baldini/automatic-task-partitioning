@@ -2,7 +2,10 @@
 
 .bak/
 .pixi/
+build_ros/
 build/
+install/
+log/
 
 # Files
 *.bak
