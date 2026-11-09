@@ -1,6 +1,7 @@
 # Individual Online Learning in Robot Swarms with Task Specialization
 
 *Author: Paolo Baldini*
+*Possible venues: Autonomous Robots, Robotics and Autonomous Systems, Swarm and Evolutionary Computation, IROS (upcoming)*
 
 This experiment builds on previous work concerning the individual, communication-free, online adaptation of robots in a swarm subject to a dynamic environment.
 That work demonstrated that collective behaviour can be achieved through individual adaptation; however, it also highlighted how such process can only succeed if the performance in the task can be inferred from the individual performance of the robot.
