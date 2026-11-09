@@ -1,6 +1,8 @@
 # Folders
 
+.bak/
 .pixi/
 build/
 
 # Files
+*.bak
