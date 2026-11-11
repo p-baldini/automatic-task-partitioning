@@ -1,13 +1,10 @@
-from ..sensors import Sensors
-
-
 class Behavior:
     """Represents a behavioral policy usable by the robot."""
 
-    def reset(self, sensors: Sensors) -> None:
+    def reset(self) -> None:
         """Called when the behavior becomes active."""
         ...
 
-    def step(self, sensors: Sensors) -> None:
+    def step(self) -> None:
         """Execute the behavioral policy."""
         ...

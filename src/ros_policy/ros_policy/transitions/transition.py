@@ -1,5 +1,4 @@
 from ..behaviors import Behavior
-from ..sensors import Sensors
 
 
 class Transition:
@@ -7,10 +6,10 @@ class Transition:
     origin: Behavior = None
     target: Behavior = None
 
-    def reset(self, sensors: Sensors) -> None:
-        """Called when the origin state becomes active."""
+    def reset(self) -> None:
+        """Called whenever a behavioral transition (switch) occurs."""
         ...
 
-    def is_active(self, sensors: Sensors) -> bool:
+    def is_active(self) -> bool:
         """Checks if the condition of the transition is true."""
         return False

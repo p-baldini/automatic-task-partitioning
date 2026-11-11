@@ -1,7 +1,6 @@
 from typing import Iterable, List
 
 from .behaviors import Behavior
-from .sensors import Sensors
 from .transitions import Same, Transition
 
 
@@ -17,14 +16,14 @@ class FSM:
         self.transitions: List[Transition] = []
         self.state = next(iter(self.behaviors), None)
 
-    def step(self, sensors: Sensors) -> tuple:
+    def step(self) -> None:
         """Take the first enabled transition, if any, then return the command of the active behavior."""
         out = filter(lambda t: t.origin == self.state, self.transitions)
-        active = filter(lambda t: t.is_active(sensors), out)
+        active = filter(lambda t: t.is_active(), out)
         target = next(map(lambda t: t.target, active), self.state)
         if target is not self.state:
-            target.reset(sensors)
-            for t in self.transitions:
-                t.reset(sensors)
+            target.reset()
+            for transition in self.transitions:
+                transition.reset()
             self.state = target
-        return self.state.step(sensors)
+        self.state.step()
