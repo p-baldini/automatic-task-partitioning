@@ -3,10 +3,7 @@ from ..sensors import Sensors
 
 
 class Transition:
-    """
-    A condition that switches the FSM from the `origin` behavior to the `target` one (set by FSM.add_transition).
-    An instance is one edge: to use the same condition on several edges, see Same.
-    """
+    """A condition to enable the passage from one behavior to another."""
     origin: Behavior = None
     target: Behavior = None
 
