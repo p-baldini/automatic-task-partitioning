@@ -12,7 +12,7 @@ class Avoidance(Behavior):
         self.state, self.turn = robot_state, 0
 
     def reset(self) -> None:
-        left, right = sum(self.state.front[0, 1]), sum(self.state.front[3, 4])
+        left, right = self.state.front[0] + self.state.front[1], self.state.front[3] + self.state.front[4]
         self.turn = (right > left) - (left > right) or random.choice((-1, 1))
 
     def step(self) -> None:
