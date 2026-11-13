@@ -9,6 +9,7 @@ class State:
     """Latest known robot state and information."""
     INTERWHEEL_DISTANCE = 0.08          # m, as in ros_thymio
     MAX_WHEEL_SPEED = 0.1               # m/s, ros_thymio's default max_wheel_speed (10 cm/s)
+    ANGULAR_SPEED = 1.5                 # rad/s
 
     step_counter: int                   # a value containing the steps count since the start of the simulation.
     proximity: Tuple[7 * float] = None  # 7 values in [0,1]: the first 5 contain the value of the front proximity
