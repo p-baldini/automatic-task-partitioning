@@ -56,6 +56,7 @@ class State:
         """Set left and right wheel speeds of the motors (in [-1,1]). Update the nest position accordingly."""
         self.heading, self.odometry_step = odometry(self), self.step_counter
         self.motors = [round(left_velocity, 2), round(right_velocity, 2)]
+        # TODO: check very carefully that this method is called only once per computation step, otherwise it may cause errors in the odometry. Also, consider if there is a better way to manage it.
 
 
 def odometry(state: State) -> Optional[Tuple[float, float]]:
