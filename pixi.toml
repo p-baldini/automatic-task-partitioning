@@ -13,6 +13,7 @@ ARGOS_PLUGIN_PATH = "$PIXI_PROJECT_ROOT/build"
 LD_LIBRARY_PATH = "/run/opengl-driver/lib:$LD_LIBRARY_PATH"
 
 [tasks]
+clean = { cmd="rm -rf build build_ros install log" }
 configure = { cmd = "cmake -S src -B build -G Ninja -DCMAKE_BUILD_TYPE=Release", inputs = ["src/**/CMakeLists.txt"], outputs = ["build/build.ninja"] }
 build = { cmd = "cmake --build build", depends-on = ["configure"] }
 argos3 = { cmd = "argos3 -c exp/arena.argos", depends-on = ["build"] }
