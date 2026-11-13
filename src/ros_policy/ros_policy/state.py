@@ -58,6 +58,11 @@ class State:
         self.motors = [round(left_velocity, 2), round(right_velocity, 2)]
         # TODO: check very carefully that this method is called only once per computation step, otherwise it may cause errors in the odometry. Also, consider if there is a better way to manage it.
 
+    def direction(self) -> Tuple[float, float]:
+        """Linear [m/s] and angular [rad/s] speed of the robot movement."""
+        left, right = (m * self.MAX_WHEEL_SPEED for m in self.motors)
+        return (left + right) / 2, (right - left) / self.INTERWHEEL_DISTANCE
+
 
 def odometry(state: State) -> Optional[Tuple[float, float]]:
     """The heading now, given the motors kept their speeds since odometry_step."""
