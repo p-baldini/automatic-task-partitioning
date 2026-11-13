@@ -25,7 +25,7 @@ class Exploration(Behavior):
     def step(self) -> None:
         if self.duration <= 0:
             if self.state.motors[0] == self.state.motors[1]:
-                self.state.set_heading(magnitude=1, angle=random.choice(-math.pi, math.pi))
+                self.state.set_heading(magnitude=1, angle=random.choice((-math.pi, math.pi)))
                 self.duration = random.randint(0, MAX_TURN)
             else:
                 self.reset()
