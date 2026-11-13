@@ -12,7 +12,7 @@ class Thigmotaxis(Behavior):
     floor got lighter (climb) or darker (descend) by `threshold` over the last `window` steps, turns otherwise.
     """
 
-    def __init__(self, robot_state: State, window: int, threshold: float, climb: bool = True) -> None:
+    def __init__(self, robot_state: State, window: int = 1.5, threshold: float = 0.006, climb: bool = True) -> None:
         self.state = robot_state
         self.threshold, self.sign = threshold, 1.0 if climb else -1.0
         self.history, self.turn = deque(maxlen=window + 1), 0
