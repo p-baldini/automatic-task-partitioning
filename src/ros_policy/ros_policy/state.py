@@ -1,7 +1,19 @@
 import math
 
 from dataclasses import dataclass
+from enum import Enum
 from typing import Optional, Tuple
+
+
+class Zone(Enum):
+    """Floor areas, as seen by the ground sensors. Values are [low, high) floor levels."""
+    NEST = -math.inf, 0.005  # black disc on the left side (gray levels 0-1 out of 255)
+    GRADIENT = 0.005, 0.5    # left side: darker and darker towards the nest (never exceeds 127/255 = 0.498)
+    SOURCE = 0.5, 0.75       # uniform gray right side, where the preys are (128/255 = 0.502)
+    BAND = 0.75, math.inf    # white vertical band in the middle of the arena
+
+    def __contains__(self, level: float) -> bool:
+        return self.value[0] <= level < self.value[1]
 
 
 @dataclass
@@ -45,6 +57,16 @@ class State:
     def level(self) -> float:
         """Mean floor level under the ground sensors."""
         return sum(self.ground) / len(self.ground) if self.ground else 0.0
+
+    @property
+    def zone(self) -> Optional[Zone]:
+        """Zone under the ground sensors, or None before the first reading."""
+        if not self.ground:
+            return None
+        if any(g in Zone.BAND for g in self.ground):  # straddling the band edges counts as band
+            return Zone.BAND
+        # Both sensors in the same zone; mixed readings (e.g., on the nest edge) count as gradient
+        return next((z for z in Zone if all(g in z for g in self.ground)), Zone.GRADIENT)
 
     def set_heading(self, magnitude: float, angle: float) -> None:
         """Convert magnitude and direction to left and right wheel speeds and set them to the robot."""
