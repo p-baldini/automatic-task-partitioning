@@ -1,4 +1,4 @@
-from typing import Iterable, List
+from typing import Iterable, Tuple
 
 from .behaviors import Behavior
 from .transitions import Transition
@@ -12,8 +12,8 @@ class FSM:
     """
 
     def __init__(self, behaviors: Iterable[Behavior], transitions: Iterable[Transition]) -> None:
-        self.behaviors: List[Behavior] = list(behaviors)
-        self.transitions: List[Transition] = list(transitions)
+        self.behaviors: Tuple[Behavior] = tuple(behaviors)
+        self.transitions: Tuple[Transition] = tuple(transitions)
         self.state = next(iter(self.behaviors), None)
 
     def step(self) -> None:
