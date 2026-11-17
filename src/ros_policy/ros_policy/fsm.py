@@ -1,14 +1,14 @@
 from typing import Iterable, List
 
 from .behaviors import Behavior
-from .transitions import Same, Transition
+from .transitions import Transition
 
 
 class FSM:
     """
     Runs one behavior at a time, and switches to another only when a transition out of the active one is true.
     Transitions are checked in the order they were added; the first true one is taken (at most one per step).
-    Entering a state resets its behavior, and its transitions that the previous state does not share.
+    Entering a state resets its behavior and all the transitions.
     """
 
     def __init__(self, behaviors: Iterable[Behavior]) -> None:
