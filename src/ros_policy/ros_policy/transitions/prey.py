@@ -1,5 +1,6 @@
-from .transition import Transition
 from ..state import State
+from .transition import Transition
+from .wide import is_wide
 
 
 class Prey(Transition):
@@ -11,9 +12,5 @@ class Prey(Transition):
         self.negated = negated
 
     def is_active(self) -> bool:
-        v = max(self.state.front) > self.threshold and not self.is_wide(self.state.front, self.threshold)
+        v = max(self.state.front) > self.threshold and not is_wide(self.state.front, self.threshold)
         return not v if self.negated else v
-
-    def is_wide(self) -> bool:
-        active = [f > threshold for f in self.state.front]
-        return sum(active) >= 4 or (sum(active) == 3 and (active[0] or active[4]))
