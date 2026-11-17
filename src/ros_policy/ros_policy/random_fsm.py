@@ -40,19 +40,27 @@ def _transition(r: State, rng: random.Random) -> Transition:
     ])()
 
 
+def _link(t: Transition, origin: Behavior, target: Behavior) -> Transition:
+    """Set the origin and target of the transition, and return it."""
+    t.origin, t.target = origin, target
+    return t
+
+
 def random_fsm(robot: State, max_behaviors: int, max_transitions: int, rng: random.Random = random) -> FSM:
     """
     An FSM with 1 to `max_behaviors` random behaviors, each with 0 to `max_transitions` random transitions
     to another behavior. The first behavior is the initial state.
     """
-    fsm = FSM(_behavior(robot, rng) for _ in range(rng.randint(1, max_behaviors)))
-    for origin in fsm.behaviors:
-        targets = [b for b in fsm.behaviors if b is not origin]
-        for _ in range(rng.randint(0, max_transitions) if targets else 0):
-            transition = _transition(robot, rng)
-            transition.origin, transition.target = origin, rng.choice(targets)
-            fsm.transitions.append(transition)
-    return fsm
+    behaviors = [_behavior(robot, rng) for _ in range(rng.randint(1, max_behaviors))]
+
+    def out_of(origin: Behavior) -> list[Transition]:
+        targets = [b for b in behaviors if b is not origin]
+        count = rng.randint(0, max_transitions) if targets else 0
+        return [_link(_transition(robot, rng), origin, rng.choice(targets)) for _ in range(count)]
+
+    transitions = [t for origin in behaviors for t in out_of(origin)]
+
+    return FSM(behaviors, transitions)
 
 
 def mutate(fsm: FSM, robot: State, max_behaviors: int, max_transitions: int, p: float,
@@ -73,27 +81,22 @@ def mutate(fsm: FSM, robot: State, max_behaviors: int, max_transitions: int, p: 
     added = itertools.takewhile(lambda _: rng.random() < p, range(max_behaviors - len(kept)))
     behaviors = kept + [_behavior(robot, rng) for _ in added]
 
-    # set a transition origin and target and returns the transition
-    def link(t: Transition, origin: Behavior, target: Behavior) -> Transition:
-        t.origin, t.target = origin, target
-        return t
-
     # drop the transitions of removed behaviors, and remove each of the others with probability p
     survivors = [t for t in child.transitions if new.get(t.origin) and new.get(t.target) and rng.random() >= p]
 
     # substitute the condition with probability p, and attach to the new origin and target
-    kept_t = [link(_transition(robot, rng) if rng.random() < p else t, new[t.origin], new[t.target])
-              for t in survivors]
+    kept_t = [
+        _link(_transition(robot, rng) if rng.random() < p else t, new[t.origin], new[t.target])
+        for t in survivors
+    ]
 
     # consider adding transitions out of each behavior, while under the limit
     def additions(origin: Behavior) -> list:
         targets = [b for b in behaviors if b is not origin]
         free = max_transitions - sum(t.origin is origin for t in kept_t) if targets else 0
         added = itertools.takewhile(lambda _: rng.random() < p, range(free))
-        return [link(_transition(robot, rng), origin, rng.choice(targets)) for _ in added]
+        return [_link(_transition(robot, rng), origin, rng.choice(targets)) for _ in added]
 
     transitions = kept_t + [t for origin in behaviors for t in additions(origin)]
 
-    result = FSM(behaviors)
-    result.transitions = transitions
-    return result
+    return FSM(behaviors, transitions)

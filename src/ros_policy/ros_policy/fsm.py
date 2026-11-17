@@ -11,9 +11,9 @@ class FSM:
     Entering a state resets its behavior and all the transitions.
     """
 
-    def __init__(self, behaviors: Iterable[Behavior]) -> None:
+    def __init__(self, behaviors: Iterable[Behavior], transitions: Iterable[Transition]) -> None:
         self.behaviors: List[Behavior] = list(behaviors)
-        self.transitions: List[Transition] = []
+        self.transitions: List[Transition] = list(transitions)
         self.state = next(iter(self.behaviors), None)
 
     def step(self) -> None:
